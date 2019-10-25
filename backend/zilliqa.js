@@ -115,7 +115,6 @@ const verifyTweet = async (data) => {
       value: `${data.startPos}`
     }
   ];
-  console.log(zilliqa.wallet.defaultAccount);
   const tx = await deployedContract.call("verify_tweet_pay", params, {
     version: VERSION,
     amount: new BN(0),
