@@ -26,6 +26,7 @@ export default class KeystoreNotification extends Component {
         let file = new Blob([content], { type: contentType });
         a.href = URL.createObjectURL(file);
         a.download = fileName;
+        document.body.appendChild(a);
         a.click();
         URL.revokeObjectURL(a.href)
     }

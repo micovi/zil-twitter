@@ -92,11 +92,13 @@ class App extends Component {
       case 2:
         return "This user already has a wallet.";
       case 4:
-        return "This user does not have a wallet.";
+        return "This user does not have a wallet registered.";
       case 5:
-        return "This tweet has already been registered";
+        return "This tweet has already been registered.";
+      case 6:
+        return "Tweet is invalid.";
       case 7:
-        return "This tweet does has not been registered";
+        return "You can only submit one tweet every 24 hours.";
       case 8:
         return "This tweet is invalid. Please make sure you have fulfilled all requirements.";
       case 9:
