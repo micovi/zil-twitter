@@ -352,8 +352,8 @@ export default class SubmitTweet extends Component {
                 {this.props.showKeystore ? (<KeystoreNotification {...this.props} />) : (
                   <div className="header-content mx-auto">
                     <h1 className="mb-5">Enter your tweet ID</h1>
-                    <h2 className="mb-6">
-                      Your tweet must include the hashtag,{" "}
+                    <h2>
+                      1. Your tweet must include the hashtag,{" "}
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
@@ -361,6 +361,9 @@ export default class SubmitTweet extends Component {
                       >
                         #{HASHTAG}
                       </a>
+                    </h2>
+                    <h2 className="mb-6">
+                      2. You can only get paid for one tweet per day.
                     </h2>
                     <div className="row my-auto w-100">
                       <form

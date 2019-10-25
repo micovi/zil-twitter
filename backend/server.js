@@ -51,7 +51,7 @@ router.route("/auth/twitter/reverse").post((req, res) => {
     {
       url: "https://api.twitter.com/oauth/request_token",
       oauth: {
-        oauth_callback: "https://localhost",
+        oauth_callback: process.env.WEBSITE_URL,
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
         consumer_secret: process.env.TWITTER_CONSUMER_SECRET
       }
