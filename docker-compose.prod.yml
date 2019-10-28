@@ -1,6 +1,7 @@
 version: "3"
 services:
   backend:
+    image: backend_prod
     build: backend
     ports:
       - "4000:4000"
@@ -14,7 +15,7 @@ services:
     command: node server.js
 
   frontend:
-    image: zil-twitter_frontend_prod
+    image: frontend_prod
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod

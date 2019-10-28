@@ -159,21 +159,12 @@ export default class SubmitTweet extends Component {
       return;
     }
 
-    if (!this.state.privateKey || !this.state.passphrase) {
-      this.setState({
-        showInput: true
-      });
-      return;
-    }
-
-    const privateKey = this.state.privateKey;
-
     try {
       this.setState({
         showLoading: true
       });
 
-      let id = tweetId, isTransactionId = false, address = this.props.getAddress();
+      let id = tweetId, address = this.props.getAddress();
 
       const submitData = await this.getTweetVerification(id, false, address);
 
