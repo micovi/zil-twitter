@@ -40,7 +40,7 @@ export default class CreateWalletScreen extends Component {
       if (!isRegistered) {
         this.generateKey();
         privateKey = this.state.privateKey;
-        await this.requestFunds(privateKey);
+        // await this.requestFunds(privateKey);
         await this.register(privateKey, username);
         localStorage.setItem("walletAddress", CP.getAddressFromPrivateKey(privateKey));
       } else {
@@ -79,7 +79,7 @@ export default class CreateWalletScreen extends Component {
 
         if (response.status === 401) {
           window.$('#loadingModal').modal("hide");
-          window.$('body').removeClass('modal-open');
+          window.$('body').removeClass('modal-open'); 
           window.$('.modal-backdrop').remove();
           this.props.onLogout(true);
           return;
