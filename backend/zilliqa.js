@@ -92,7 +92,7 @@ const fundAccount = async (address) => {
   return tx.receipt;
 };
 
-export const registerUser = async (userAddress, username) => {
+const registerUser = async (userAddress, username) => {
 
   const tx = await contract.call(
     "register_user",
@@ -219,6 +219,7 @@ module.exports = {
   getTweetId,
   getHashtag,
   verifyTweet,
+  registerUser,
   depositToContract,
   deployTestContract,
   depositToAddress
