@@ -37,14 +37,26 @@ export default class SubmitTweet extends Component {
 
   async updateBalance() {
     const address = this.props.getAddress();
-    if (!address) {
-      this.setState({ balance: "Address not specified. Please enter private key when submitting tweet" });
+    try {
+      if (!address) {
+        this.setState({ balance: "Address not specified. Please enter private key when submitting tweet" });
+        return;
+      }
+      const data = await zilliqa.blockchain.getBalance(address);
+      let zilBalance = 0;
+
+      if (data.result.balance === undefined) {
+        zilBalance = 0;
+      } else {
+        zilBalance = units.fromQa(new BN(data.result.balance), units.Units.Zil);
+      }
+
+      this.setState({ balance: zilBalance });
+    } catch (error) {
+      this.setState({ balance: error.message });
       return;
     }
-    const data = await zilliqa.blockchain.getBalance(address);
-    const { balance } = data.result;
-    const zilBalance = units.fromQa(new BN(balance), units.Units.Zil);
-    this.setState({ balance: zilBalance });
+
   }
 
   async getTweetVerification(id, isTransactionId, address) {
@@ -114,7 +126,8 @@ export default class SubmitTweet extends Component {
   }
 
   async submitTweet() {
-    const { tweetId, passphrase } = this.state;
+    const { tweetId } = this.state;
+    const userAddress = this.props.getAddress();
 
     if (tweetId === "") {
       this.setState({ errMsg: "Tweet ID cannot be empty", showLoading: true });
@@ -150,10 +163,18 @@ export default class SubmitTweet extends Component {
       });
       return;
     }
-    const { isVerified } = await getTweetStatus(tweetId);
+    const { isVerified, alreadySent } = await getTweetStatus(tweetId, userAddress);
     if (isVerified) {
       this.setState({
         errMsg: "Tweet ID already submitted. Please submit another tweet ID.",
+        showLoading: true
+      });
+      return;
+    }
+
+    if (alreadySent) {
+      this.setState({
+        errMsg: "You already submitted one tweet in the last 24 hours.",
         showLoading: true
       });
       return;
@@ -170,8 +191,8 @@ export default class SubmitTweet extends Component {
 
       const isSuccessfull = (submitData.receipt.success === true);
 
-      if(!isSuccessfull) {
-        throw new Error('There is something wrong with the contract TX. Please try again later.');
+      if (!isSuccessfull) {
+        throw new Error('There is something wrong. Please try again later.');
       }
 
       //const submitData = await _submitTweet(privateKey, data, this.state.passphrase);

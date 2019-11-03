@@ -42,7 +42,7 @@ const initParams = [
   {
     vname: "owner",
     type: "ByStr20",
-    value: `0x${ownerAddress}`
+    value: `${ownerAddress}`
   },
   {
     "vname": "zils_per_tweet",
@@ -90,6 +90,34 @@ const fundAccount = async (address) => {
     })
   );
   return tx.receipt;
+};
+
+export const registerUser = async (userAddress, username) => {
+
+  const tx = await contract.call(
+    "register_user",
+    [
+      {
+        vname: "user_address",
+        type: "ByStr20",
+        value: `0x${userAddress}`
+      },
+      { vname: "twitter_username", type: "String", value: username }
+    ],
+    {
+      version: VERSION,
+      amount: new BN(0),
+      gasPrice: myGasPrice,
+      gasLimit: Long.fromNumber(10000)
+    }
+  );
+  const { event_logs: eventLogs } = tx.receipt;
+  if (!eventLogs) {
+    throw new Error(
+      "Username or address already used. Please try another username."
+    );
+  }
+  return tx;
 };
 
 const verifyTweet = async (data) => {

@@ -63,8 +63,36 @@ export default class CreateWalletScreen extends Component {
   async register(privateKey, username) {
     if (this.state.successRequestFund) {
       const address = CP.getAddressFromPrivateKey(privateKey);
-      const tx = await registerUser(privateKey, address, username);
-      this.setState({ successRegisterUser: tx.receipt.success });
+
+      try {
+        const response = await fetch(`${CURRENT_URI}/api/v1/register-user`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            address,
+            username
+          }),
+          credentials: "include"
+        });
+
+        if (response.status === 401) {
+          window.$('#loadingModal').modal("hide");
+          window.$('body').removeClass('modal-open');
+          window.$('.modal-backdrop').remove();
+          this.props.onLogout(true);
+          return;
+        }
+
+        const data = await response.json();
+
+        this.setState({ successRegisterUser: data.receipt.success });
+       // return data;
+      } catch (e) {
+        console.log(e);
+        throw new Error("Failed to verify tweet. Please try again.");
+      }
     }
   }
 

@@ -118,8 +118,6 @@ class App extends Component {
 
   logout(isForced) {
     localStorage.removeItem("authenticatedUsername");
-    localStorage.removeItem("walletAddress");
-    localStorage.removeItem("keystore");
     if (isForced === true) {
       this.setState({
         showAlert: true,

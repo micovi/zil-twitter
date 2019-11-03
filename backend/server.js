@@ -193,10 +193,26 @@ const fulfillSubmitTweet = async (req, res) => {
   }
 };
 
+
+const fullfillRegisterUser = async (req, res) => {
+  const { address: userAddress, username } = req;
+  try {
+    const registertx = await registerUser(userAddress, username);
+    res.status(200).send(registertx);
+  } catch (e) {
+    console.error(e);
+    res.status(400).send(e);
+  }
+};
+
+
 router
   .route("/submit-tweet")
   .post(authenticate, fulfillSubmitTweet);
-// router.route("/submit-tweet").post(authenticate, fulfillSubmitTweet);
+
+router
+  .route("/register-user")
+  .post(authenticate, fullfillRegisterUser);
 
 router
   .route("/verify-username")
