@@ -1,6 +1,22 @@
 import React, { Component } from "react";
 import { Zilliqa } from '@zilliqa-js/zilliqa';
 
+
+const saveData = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, fileName) {
+        var json = JSON.stringify(data),
+            blob = new Blob([json], { type: "octet/stream" }),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+
 export default class KeystoreNotification extends Component {
     constructor(props) {
         super(props);
@@ -21,16 +37,6 @@ export default class KeystoreNotification extends Component {
         this.setState({ passphrase: e.target.value });
     }
 
-    download(content, fileName, contentType) {
-        let a = document.createElement("a");
-        let file = new Blob([content], { type: contentType });
-        a.href = URL.createObjectURL(file);
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        URL.revokeObjectURL(a.href)
-    }
-
     async downloadKeystore(e) {
         this.setState({ passError: false });
 
@@ -46,7 +52,7 @@ export default class KeystoreNotification extends Component {
 
             localStorage.setItem('keystore', JSON.stringify(keystore));
 
-            this.download(keystore, 'SocialPayKeystore.json', 'application/json');
+            saveData(keystore, 'SocialPayKeystore.json');
             this.setState({ fileDownloaded: true });
         }
     }
