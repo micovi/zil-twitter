@@ -781,3 +781,13 @@ header.masthead-wallet .header-content .card .card-body .row .fa-paste {
   border: 1px solid #ccc;
   padding-left:5px;
 }
+
+@media (max-width: 700px) {
+  .keystore-action-file {
+    display: flex;
+    flex-direction: column !important;
+  }
+  .keystore-action-file input {
+    margin-bottom: 1rem;
+  }
+}

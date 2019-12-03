@@ -77,7 +77,7 @@ export default class KeystoreNotification extends Component {
             <div className="keystore-file">
                 <p className="font-weight-bold mb-0">Keystore File</p>
                 <p className="small">Keystore Files need to be encrypted using a secret passhprase.<br />Please remember this passphrase for further actions on the wallet.</p>
-                <div className="d-flex">
+                <div className="d-flex keystore-action-file">
                     <input type="password" placeholder="Enter passphrase" onChange={this.handleChange} className="input rounded-corners mr-4" /> <button onClick={this.downloadKeystore} className="btn btn-secondary"><i className="fas fa-download"></i> Download Keystore.json</button>
                 </div>
                 {passError ? (

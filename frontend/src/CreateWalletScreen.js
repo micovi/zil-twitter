@@ -40,7 +40,7 @@ export default class CreateWalletScreen extends Component {
       if (!isRegistered) {
         this.generateKey();
         privateKey = this.state.privateKey;
-        // await this.requestFunds(privateKey);
+        await this.requestFunds(privateKey);
         await this.register(privateKey, username);
         localStorage.setItem("walletAddress", CP.getAddressFromPrivateKey(privateKey));
       } else {
