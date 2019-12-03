@@ -16,6 +16,7 @@ const mongoose = require("./mongoose"),
 const {
   fundAccount,
   getTweetId,
+  registerUser,
   verifyTweet
 } = require("./zilliqa");
 const { getTweetData, getTweetUsername } = require("./twitter");
@@ -195,9 +196,10 @@ const fulfillSubmitTweet = async (req, res) => {
 
 
 const fullfillRegisterUser = async (req, res) => {
-  const { address: userAddress, username } = req;
+
+  console.log('request body',req.body);
   try {
-    const registertx = await registerUser(userAddress, username);
+    const registertx = await registerUser(req.body.address,req.body.username);
     res.status(200).send(registertx);
   } catch (e) {
     console.error(e);

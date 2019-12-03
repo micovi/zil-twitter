@@ -40,8 +40,9 @@ export default class CreateWalletScreen extends Component {
       if (!isRegistered) {
         this.generateKey();
         privateKey = this.state.privateKey;
-        await this.requestFunds(privateKey);
-        await this.register(privateKey, username);
+        // await this.requestFunds(privateKey);
+        console.log('awaiting registration');
+	await this.register(privateKey, username);
         localStorage.setItem("walletAddress", CP.getAddressFromPrivateKey(privateKey));
       } else {
         throw new Error('Your account is already registered.');
@@ -61,7 +62,6 @@ export default class CreateWalletScreen extends Component {
   }
 
   async register(privateKey, username) {
-    if (this.state.successRequestFund) {
       const address = CP.getAddressFromPrivateKey(privateKey);
 
       try {
@@ -93,7 +93,7 @@ export default class CreateWalletScreen extends Component {
         console.log(e);
         throw new Error("Failed to verify tweet. Please try again.");
       }
-    }
+
   }
 
   async requestFunds(privateKey) {

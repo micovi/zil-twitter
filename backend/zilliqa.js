@@ -94,7 +94,7 @@ const fundAccount = async (address) => {
 
 const registerUser = async (userAddress, username) => {
 
-  const tx = await contract.call(
+  const tx = await deployedContract.call(
     "register_user",
     [
       {
@@ -111,12 +111,8 @@ const registerUser = async (userAddress, username) => {
       gasLimit: Long.fromNumber(10000)
     }
   );
-  const { event_logs: eventLogs } = tx.receipt;
-  if (!eventLogs) {
-    throw new Error(
-      "Username or address already used. Please try another username."
-    );
-  }
+  console.log('DEPLOY TX RESULT:',tx);
+  
   return tx;
 };
 
