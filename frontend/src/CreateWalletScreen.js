@@ -32,6 +32,7 @@ export default class CreateWalletScreen extends Component {
   }
 
   async generateWallet() {
+    amplitude.getInstance().logEvent('GENERATE_WALLET_START');
     let privateKey = null;
     try {
       const username = this.getUsername();
@@ -42,8 +43,11 @@ export default class CreateWalletScreen extends Component {
         privateKey = this.state.privateKey;
         // await this.requestFunds(privateKey);
         console.log('awaiting registration');
-	await this.register(privateKey, username);
-        localStorage.setItem("walletAddress", CP.getAddressFromPrivateKey(privateKey));
+ 
+        await this.register(privateKey, username);
+        const walletAddr = CP.getAddressFromPrivateKey(privateKey);
+        amplitude.getInstance().logEvent('GENERATE_WALLET_SUCCESS', {username: username, walletAddress: walletAddr});
+        localStorage.setItem("walletAddress", walletAddr);
       } else {
         throw new Error('Your account is already registered.');
       }
@@ -52,6 +56,7 @@ export default class CreateWalletScreen extends Component {
       this.props.handleWalletStateChange(true, privateKey);
 
     } catch (e) {
+      amplitude.getInstance().logEvent('GENERATE_WALLET_ERROR', {e:e});
       this.setState({ errMsg: e.message });
     }
   }
@@ -63,7 +68,7 @@ export default class CreateWalletScreen extends Component {
 
   async register(privateKey, username) {
       const address = CP.getAddressFromPrivateKey(privateKey);
-
+    amplitude.getInstance().logEvent('GENERATE_WALLET_REGISTER_START');
       try {
         const response = await fetch(`${CURRENT_URI}/api/v1/register-user`, {
           method: "POST",
@@ -86,11 +91,12 @@ export default class CreateWalletScreen extends Component {
         }
 
         const data = await response.json();
-
+        amplitude.getInstance().logEvent('GENERATE_WALLET_REGISTER_SUCCESS');
         this.setState({ successRegisterUser: data.receipt.success });
        // return data;
       } catch (e) {
         console.log(e);
+        amplitude.getInstance().logEvent('GENERATE_WALLET_REGISTER_ERROR', {e:e});
         throw new Error("Failed to verify tweet. Please try again.");
       }
 
@@ -98,7 +104,7 @@ export default class CreateWalletScreen extends Component {
 
   async requestFunds(privateKey) {
     const address = CP.getAddressFromPrivateKey(privateKey);
-
+    amplitude.getInstance().logEvent('GENERATE_WALLET_REQUEST_FUNDS_START');
     try {
       const response = await fetch(`${CURRENT_URI}/api/v1/request-funds`, {
         method: "POST",
@@ -115,9 +121,11 @@ export default class CreateWalletScreen extends Component {
         throw Error;
       }
       const receipt = await response.json();
+      amplitude.getInstance().logEvent('GENERATE_WALLET_REQUEST_FUNDS_SUCCESS');
       this.setState({ successRequestFund: receipt.success });
       // this.setState({ successRequestFund: true });
     } catch (e) {
+      amplitude.getInstance().logEvent('GENERATE_WALLET_REQUEST_FUNDS_ERROR', {e:e});
       throw Error("Failed in requesting funds.\nPlease refresh and try again.");
     }
   }

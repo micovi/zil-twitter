@@ -40,6 +40,8 @@ export default class KeystoreNotification extends Component {
     async downloadKeystore(e) {
         this.setState({ passError: false });
 
+        amplitude.getInstance().logEvent('DOWNLOAD_KEYSTORE_START');
+
         const { privateKey } = this.state;
         const zilliqa = new Zilliqa('https://api.zilliqa.com');
 
@@ -51,7 +53,7 @@ export default class KeystoreNotification extends Component {
             const keystore = await zilliqa.wallet.defaultAccount.toFile(this.state.passphrase);
 
             localStorage.setItem('keystore', JSON.stringify(keystore));
-
+            amplitude.getInstance().logEvent('DOWNLOAD_KEYSTORE_SUCCESS');
             saveData(keystore, 'SocialPayKeystore.json');
             this.setState({ fileDownloaded: true });
         }

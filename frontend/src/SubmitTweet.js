@@ -128,6 +128,7 @@ export default class SubmitTweet extends Component {
   async submitTweet() {
     const { tweetId } = this.state;
     const userAddress = this.props.getAddress();
+    amplitude.getInstance().logEvent('START_SUBMIT_TWEET');
 
     if (tweetId === "") {
       this.setState({ errMsg: "Tweet ID cannot be empty", showLoading: true });
@@ -148,6 +149,7 @@ export default class SubmitTweet extends Component {
       isValidUser = await this.isValidUser(tweetId);
     } catch (e) {
       console.error(e);
+      amplitude.getInstance().logEvent('SUBMIT_TWEET_ERROR', { e: e });
       this.setState({
         errMsg:
           "An error occurred, please try again",
@@ -201,9 +203,11 @@ export default class SubmitTweet extends Component {
       if (!verifiedTweet) {
         throw Error(this.props.getMessage(submitData));
       } else {
+        amplitude.getInstance().logEvent('SUBMIT_TWEET_SUCCESS', { tweet: submitData });
         this.setState({ verifiedTweet, submittedTweet: true });
       }
     } catch (e) {
+      amplitude.getInstance().logEvent('SUBMIT_TWEET_ERROR', { e: e });
       console.log(e);
       this.setState({ errMsg: e.message });
     }
@@ -214,6 +218,7 @@ export default class SubmitTweet extends Component {
   }
 
   handleInstructionsClick(e) {
+    amplitude.getInstance().logEvent('CLICK_INSTRUCTIONS', { username: loggedUser });
     e.preventDefault();
     const $container = window.$("html,body");
     const $scrollTo = window.$(".instructions-section");

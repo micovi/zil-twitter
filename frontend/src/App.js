@@ -79,6 +79,7 @@ class App extends Component {
     response.json().then(json => {
       localStorage.setItem("authenticatedUsername", json.username);
       document.cookie = `token=${json.los}`;
+      amplitude.getInstance().logEvent('LOGIN_SUCCESS', {username: json.username});
       this.setState({isAuthenticated: true });
     });
   }
@@ -110,6 +111,7 @@ class App extends Component {
   }
 
   handleFailed() {
+    amplitude.getInstance().logEvent('LOGIN_FAILED');
     this.setState({
       showAlert: true,
       alertText: "Login failed. Please try again"
@@ -117,7 +119,9 @@ class App extends Component {
   }
 
   logout(isForced) {
+    const loggedUser = localStorage.getItem('authenticatedUsername')
     localStorage.removeItem("authenticatedUsername");
+    amplitude.getInstance().logEvent('LOGOUT', { username: loggedUser });
     if (isForced === true) {
       this.setState({
         showAlert: true,
@@ -147,6 +151,7 @@ class App extends Component {
   }
 
   renderCreateWalletScreen(props) {
+    amplitude.getInstance().logEvent('LOAD_CREATE_WALLET');
     return (
       <CreateWalletScreen
         {...props}
@@ -159,6 +164,7 @@ class App extends Component {
   }
 
   renderSubmitScreen(props) {
+
     const { showAlert, alertText, showKeystore } = this.state;
     return (
       <SubmitTweet
@@ -176,6 +182,7 @@ class App extends Component {
   }
 
   renderWalletScreen(props) {
+    amplitude.getInstance().logEvent('LOAD_WALLET_SCREEN', { address: this.getAddress });
     return (
       <WalletScreen 
         {...props}
