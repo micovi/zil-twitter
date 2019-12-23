@@ -219,7 +219,7 @@ export default class SubmitTweet extends Component {
   }
 
   handleInstructionsClick(e) {
-    amplitude.getInstance().logEvent('CLICK_INSTRUCTIONS', { username: loggedUser });
+    amplitude.getInstance().logEvent('CLICK_INSTRUCTIONS');
     e.preventDefault();
     const $container = window.$("html,body");
     const $scrollTo = window.$(".instructions-section");
