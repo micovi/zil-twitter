@@ -1,3 +1,4 @@
+/* global amplitude */
 import React, { Component } from "react";
 import { Zilliqa } from '@zilliqa-js/zilliqa';
 
