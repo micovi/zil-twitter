@@ -1,3 +1,4 @@
+/* global amplitude */
 import React, { Component } from "react";
 import "whatwg-fetch";
 import { registerUser, isUserRegistered } from "./zilliqa";

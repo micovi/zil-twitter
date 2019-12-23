@@ -1,3 +1,4 @@
+/* global amplitude */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
@@ -7,7 +8,7 @@ import InputModal from './InputModal';
 import LoadingModal from './LoadingModal';
 import { CURRENT_URI, HASHTAG } from './utils';
 import { getTweetStatus, zilliqa } from './zilliqa';
-import amplitude from "amplitude-js";
+
 
 const { units, BN } = require("@zilliqa-js/util");
 

@@ -1,3 +1,4 @@
+/* global amplitude */
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { toBech32Address } from "@zilliqa-js/crypto";

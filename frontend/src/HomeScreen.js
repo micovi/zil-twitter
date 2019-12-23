@@ -1,3 +1,4 @@
+/* global amplitude */
 import TwitterLogin from "react-twitter-auth";
 import React, { Component } from "react";
 import { CURRENT_URI } from "./utils";
